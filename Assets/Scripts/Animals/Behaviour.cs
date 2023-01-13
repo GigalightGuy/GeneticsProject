@@ -30,11 +30,9 @@ public class Behaviour : MonoBehaviour
     // Update is called once per frame
     protected virtual void Update()
     {
-        timeScale = TimeManager.instance.customTimeScale;
-        timer += Time.deltaTime * timeScale;
+        timer += Time.deltaTime;
 
         currentSpeed.text = agent.speed.ToString();
-        Debug.Log(initialSpeed);
 
         if (timer >= wanderTimer && !gotTarget)
         {
@@ -44,6 +42,7 @@ public class Behaviour : MonoBehaviour
         }
         else if (gotTarget)
         {
+            if (currentTarget == null) return;
             agent.SetDestination(currentTarget.transform.position);
         }
     }

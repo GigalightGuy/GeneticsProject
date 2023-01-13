@@ -7,8 +7,7 @@ using System;
 public class TimeManager : MonoBehaviour
 {
 
-    [SerializeField] [Range(.1f,100)] private float unityTimeScale = 1.0f;
-    [SerializeField] public float customTimeScale = 1.0f;
+    [SerializeField] [Range(.1f, 100)] private float unityTimeScale = 100.0f;
     [SerializeField] private TextMeshProUGUI[] timeSlots;
 
     public static TimeManager instance;
@@ -46,8 +45,9 @@ public class TimeManager : MonoBehaviour
         // if (Input.GetKey(KeyCode.M)) IncreaseTimeScale();
         // else if (Input.GetKey(KeyCode.N)) DecreaseTimeScale();
 
-        if (Input.GetKey(KeyCode.RightArrow) && readyInput && unityTimeScale <= 100)
+        if (Input.GetKey(KeyCode.RightArrow) && readyInput && unityTimeScale < 100)
         {
+            if (unityTimeScale == 1.1f) unityTimeScale = 1;
             readyInput = false;
             unityTimeScale++;
             StartCoroutine(ReadyInput());
@@ -66,12 +66,10 @@ public class TimeManager : MonoBehaviour
             stopped = true;
         }
         else if (Input.GetKeyDown(KeyCode.Space) && stopped)
-        {  
+        {
             unityTimeScale = saveValue;
             stopped = false;
         }
-        if (customTimeScale <= 0) customTimeScale = 0;
-
 
         CalculateTimes();
         WriteTimes();
@@ -109,12 +107,12 @@ public class TimeManager : MonoBehaviour
 
     private void CalculateTimes()
     {
-        seconds = (int)(currentElapsedTime * customTimeScale % 60);
-        minutes = (int)(currentElapsedTime * customTimeScale / 60f % 60);
-        hours = (int)(currentElapsedTime * customTimeScale / 3600f % 24);
-        days = (int)(currentElapsedTime * customTimeScale / 86400f % 31);
-        months = (int)(currentElapsedTime * customTimeScale / 2.628e+6f % 12);
-        years = (int)(currentElapsedTime * customTimeScale / 3.154e+7f);
+        seconds = (int)(currentElapsedTime % 60);
+        minutes = (int)(currentElapsedTime / 60f % 60);
+        hours = (int)(currentElapsedTime / 3600f % 24);
+        days = (int)(currentElapsedTime / 86400f % 31);
+        months = (int)(currentElapsedTime / 2.628e+6f % 12);
+        years = (int)(currentElapsedTime / 3.154e+7f);
 
         //or (it stops IDK why)
 

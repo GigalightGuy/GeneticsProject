@@ -14,7 +14,6 @@ GameObject:
   - component: {fileID: 2808133353296846100}
   - component: {fileID: 2218825352322077465}
   - component: {fileID: -8504958694018836871}
-  - component: {fileID: -2158199877911841965}
   m_Layer: 0
   m_Name: Cow
   m_TagString: Prey
@@ -139,24 +138,8 @@ MonoBehaviour:
   wanderRadius: 30
   wanderTimer: 1
   currentSpeed: {fileID: 5736285570229379827}
---- !u!114 &-2158199877911841965
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5162548550127063129}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3e4a0b0a0c2af77478b653470747ada8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  sizeFactor: 0
-  coldResistance: 0
-  heatResistance: 0
-  speedFactor: 0
-  hungerResistance: 0
-  reproductionFactor: 0
+  gotTarget: 0
+  currentTarget: {fileID: 0}
 --- !u!1 &7098874837559840788
 GameObject:
   m_ObjectHideFlags: 0
@@ -176,7 +159,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &5158156740051925698
 RectTransform:
   m_ObjectHideFlags: 0

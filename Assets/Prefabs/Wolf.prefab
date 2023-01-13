@@ -154,7 +154,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &3291511723558473083
 RectTransform:
   m_ObjectHideFlags: 0
@@ -345,7 +345,6 @@ GameObject:
   - component: {fileID: 1030754004917095572}
   - component: {fileID: 4015467301246350538}
   - component: {fileID: 3466135856431635209}
-  - component: {fileID: -1810485640016827617}
   - component: {fileID: 1867816642218901449}
   m_Layer: 0
   m_Name: Wolf
@@ -456,25 +455,6 @@ NavMeshAgent:
   m_BaseOffset: 0.5
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
---- !u!114 &-1810485640016827617
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6887736951840486671}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3e4a0b0a0c2af77478b653470747ada8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  sizeFactor: 0
-  coldResistance: 0
-  heatResistance: 0
-  speedFactor: 0
-  hungerResistance: 0
-  reproductionFactor: 0
-  visionFactor: 0
 --- !u!114 &1867816642218901449
 MonoBehaviour:
   m_ObjectHideFlags: 0
