@@ -4,26 +4,49 @@ using UnityEngine;
 
 public class test : MonoBehaviour
 {
-    public float startValue = -0.5f;
-    public float endValue = 1.5f;
+    public Transform target;
+    [SerializeField]float speed = 1f;
+    Vector3[] path;
+    int targetIndex;
+    Vector3 targetLastPos;
 
-    private float timeCount = 0.0f;
-
-    void Update()
+    private void Start()
     {
-        timeCount += Time.deltaTime;
+        Debug.Log("Entrei no start");
+        PathRequestManager.RequestPath(transform.position,target.position,OnPathFound);
 
-        if (timeCount > 1.0f)
+
+    }
+    private void Update()
+    {
+        if (target.position != targetLastPos)
         {
-            float result = Random.value;
-            result = result * (endValue - startValue);
-            result = result + startValue;
-
-            float clampValue = Mathf.Clamp01(result);
-
-            Debug.Log("value: " + result.ToString("F3") + " result: " + clampValue.ToString("F3"));
-
-            timeCount = 0.0f;
+            PathRequestManager.RequestPath(transform.position, target.position, OnPathFound);
+        }
+        targetLastPos = target.position;
+    }
+    public void OnPathFound(Vector3[] newPath,bool pathSucessful)
+    {
+        if (pathSucessful)
+        {
+            path= newPath;
+            StopCoroutine("FollowPath");
+            StartCoroutine("FollowPath");
+        }
+    }
+    IEnumerator FollowPath() 
+    {
+        Vector3 currentWayPoint = path[0];
+        while(true)
+        {
+            if(transform.position == currentWayPoint)
+            {
+                targetIndex++;
+                if(targetIndex >= path.Length) yield break;
+                currentWayPoint = path[targetIndex];
+            }
+           transform.position= Vector3.MoveTowards(transform.position,currentWayPoint,speed);
+            yield return null;
         }
     }
 }  

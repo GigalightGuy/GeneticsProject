@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class Grid : MonoBehaviour
 {
+    public bool displayGridGismos;
     public LayerMask unwalkableMask;
     public Vector2 gridWorldSize; // tamanho da gride
     public float nodeRadius;
@@ -14,32 +15,37 @@ public class Grid : MonoBehaviour
     int gridSizeX;
     int gridSizeY;
 
-    void Start()
+    void Awake()
     {
         //Calcula o tamanho de cada nodo
         nodeDiameter = nodeRadius * 2; 
         gridSizeX = Mathf.RoundToInt(gridWorldSize.x / nodeDiameter); 
         gridSizeY = Mathf.RoundToInt(gridWorldSize.y / nodeDiameter);
         CreateGrid();
-    }
     
-    //public List<Node> GetNeighbours(Node node)
-    //{
-    //   List<Node> neighbours = new List<Node>();
-    //    for (int x = -1; x <=1; x++)
-    //    {
-    //        for (int y = -1; y <=1; y++)
-    //        {
-    //            if (x == 0 && y == 0) continue;
+    }
 
-    //            int checkX = node.gridX + x;
-    //            int checkY = node.gridY + y;
+    //Calculo e adiciono os vizinhos do nodo
+    public List<Node> GetNeighbours(Node node)
+    {
+        List<Node> neighbours = new List<Node>();
+        for (int x = -1; x <= 1; x++)
+        {
+            for (int y = -1; y <= 1; y++)
+            {
+                if (x == 0 && y == 0) continue;
 
-    //            if(checkX >= 0 && checkX< gridSizeX && checkY >= 0 && checkY<gridSizeY)
-    //                neighbours.Add(grid[checkX, checkY]);
-    //        }
-    //    }
-    //}
+                int checkX = node.gridX + x;
+                int checkY = node.gridY + y;
+
+                if (checkX >= 0 && checkX < gridSizeX && checkY >= 0 && checkY < gridSizeY)
+                    neighbours.Add(grid[checkX, checkY]);
+            }
+        }
+        return neighbours;
+    }
+
+    public int MaxSize { get { return gridSizeX * gridSizeY; } }
 
     void CreateGrid()
     {
@@ -81,17 +87,33 @@ public class Grid : MonoBehaviour
         int y = Mathf.RoundToInt((gridSizeY - 1) * percenteY);
         return grid[x, y];
     }
+    public List<Node> path;
     private void OnDrawGizmos()
     {
         Gizmos.DrawWireCube(transform.position, new Vector3(gridWorldSize.x,1,gridWorldSize.y)); //Utilziamos o Y no fim pq o Z representa a altura em 3D
-        
-        if(grid!=null)
-        {
-            foreach (Node node in grid)
+
+
+        //Mostra trajetoria do caminho em pontos pretos 
+        //if (onlyDisplayPathGizmos)
+        //{
+        //    if (path != null)
+        //        foreach (Node node in path)
+        //        {
+        //            Gizmos.color = Color.black;
+        //            Gizmos.DrawCube(node.worldPosition, Vector3.one * (nodeDiameter - .1f));
+        //        }
+        //}
+        //else
+        //{
+            if (grid != null && displayGridGismos)
             {
-                Gizmos.color= (node.walkable) ? Color.white : Color.red;
-                Gizmos.DrawCube(node.worldPosition, Vector3.one * (nodeDiameter - .1f));
+                foreach (Node node in grid)
+                {
+                    Gizmos.color = (node.walkable) ? Color.white : Color.red;
+                   // if (path != null) if (path.Contains(node)) Gizmos.color = Color.black;
+                    Gizmos.DrawCube(node.worldPosition, Vector3.one * (nodeDiameter - .1f));
+                }
             }
-        }
+        //}
     }
 }
