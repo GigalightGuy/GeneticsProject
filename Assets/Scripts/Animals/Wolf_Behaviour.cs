@@ -57,7 +57,8 @@ public class Wolf_Behaviour : Behaviour
 
     private void EatPrey()
     {
-        Destroy(currentTarget);
+        currentTarget.GetComponent<Behaviour>().GetEaten();
+        gameObject.GetComponent<Animal>().GainFood(30);
         currentTarget = null;
         gotTarget = false;
     }

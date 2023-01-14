@@ -8,11 +8,14 @@ public class Animal : MonoBehaviour
     [Header("Species Variables")]
     public float _lifeTimeInHours;
     public float _defaultSpeed;
+    public float _defaultAccelaration;
     public float _defaultFoodLossPerHour;
     public int _maxBabiesInLife;
     public int _maxFood;
     public int _foodOnBirth;
     public int _minFoodForHorny;
+    public float _breedCooldownInHours;
+    public float _breedCost;
 
     [Header("Personal Genetics")]
     public float _sizeFactor;
@@ -25,15 +28,21 @@ public class Animal : MonoBehaviour
     public float _foodLostPerHour;
     public int _numberOfDescendants;
     public GameObject _parent;
-    void Start()
+    public bool _readyToBreed = true;
+
+
+    void Awake()
     {
         Destroy(gameObject,_lifeTimeInHours * 3600);
-        InvokeRepeating("Breed", 3600, 3600);
         _numberOfDescendants = 0;
         _currentFood = _foodOnBirth;
-        //_foodLostPerHour = _defaultFoodLossPerHour;
+        _foodLostPerHour = _defaultFoodLossPerHour;
+    }
+    void Start()
+    {
         PopulationManager.instance.AddAnimal(gameObject);
         gameObject.name = "wolfGen" + _generation;
+        StartCoroutine(ReadyBreeding());
     }
 
     public void Born(Animal parent)
@@ -41,7 +50,7 @@ public class Animal : MonoBehaviour
         _sizeFactor = Genetics.genetics.MutateSize(parent._sizeFactor);
         _speedFactor = Genetics.genetics.MutateSpeed(parent._speedFactor);
         _hungerResistance = Genetics.genetics.MutateHungerResistance(parent._hungerResistance,_sizeFactor, _speedFactor);
-
+        _readyToBreed = false;
         _parent = parent.gameObject;
 
         ApplyChanges();
@@ -52,15 +61,16 @@ public class Animal : MonoBehaviour
     {
         gameObject.transform.localScale = Vector3.one * _sizeFactor;
         gameObject.GetComponent<NavMeshAgent>().speed = _defaultSpeed * _speedFactor;
+        gameObject.GetComponent<NavMeshAgent>().acceleration = _defaultAccelaration * _speedFactor;
         _foodLostPerHour *= (2 - _hungerResistance);
     }
 
-    private void LoseFood(float forcedLoss = 0)
+    public void LoseFood(float forcedLoss = 0)
     {
         _currentFood -= _foodLostPerHour /3600 * Time.deltaTime + forcedLoss;
     }
 
-    private void GainFood(float amount)
+    public void GainFood(float amount)
     {
         _currentFood += amount;
         if (_currentFood >= _maxFood) _currentFood = _maxFood;
@@ -77,6 +87,9 @@ public class Animal : MonoBehaviour
         descendantScript._generation = _generation + 1;
         descendant.transform.parent = transform.parent;
         _numberOfDescendants++;
+        LoseFood(_breedCost);
+        _readyToBreed = false;
+        StartCoroutine(ReadyBreeding());
     }
 
     // Update is called once per frame
@@ -86,11 +99,20 @@ public class Animal : MonoBehaviour
         else LoseFood();
 
         //Test Poop Baby
-        //if (Input.GetKeyDown(KeyCode.B))
-        //{
-        //    Breed();
-        //}
+        if (Input.GetKeyDown(KeyCode.B))
+        {
+            Breed();
+        }
+        if (_readyToBreed)
+        {
+            Breed();
+        }
+    }
 
+    IEnumerator ReadyBreeding()
+    {
+        yield return new WaitForSeconds(_breedCooldownInHours*3600);
+        _readyToBreed = true;
     }
 
     private void OnDestroy()

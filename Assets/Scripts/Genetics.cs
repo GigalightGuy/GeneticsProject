@@ -60,8 +60,7 @@ public class Genetics : MonoBehaviour
     public float MutateHungerResistance(float hungerRes , float sizeFactor, float speedFactor)
     {
         float returnValue = 1 + Random.Range(maxNegativeHungerResistanceMutation, maxPositiveHungerResistanceMutation);
-        if (returnValue > 1) returnValue /= ((sizeFactor + speedFactor) / 2);
-        else returnValue *= ((sizeFactor + speedFactor) /2);
+        returnValue /= ((sizeFactor + speedFactor) / 2);
         Debug.LogWarning("HungerResistance Factor = " + returnValue);
         if (returnValue > maxHungerResistance) return maxHungerResistance;
         else if (returnValue < minHungerResistance) return minHungerResistance;
