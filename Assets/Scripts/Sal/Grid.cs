@@ -110,7 +110,7 @@ public class Grid : MonoBehaviour
                 foreach (Node node in grid)
                 {
                     Gizmos.color = (node.walkable) ? Color.white : Color.red;
-                   // if (path != null) if (path.Contains(node)) Gizmos.color = Color.black;
+                    if (path != null) if (path.Contains(node)) Gizmos.color = Color.black;
                     Gizmos.DrawCube(node.worldPosition, Vector3.one * (nodeDiameter - .1f));
                 }
             }
