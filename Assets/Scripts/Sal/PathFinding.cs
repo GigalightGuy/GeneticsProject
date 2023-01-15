@@ -36,13 +36,31 @@ public class PathFinding : MonoBehaviour
 
         if (startNode.walkable && targetNode.walkable)
         {
+            //Sem otimização 
+            /*
+             * List<Node> openSet= new List<Node>();
+             */
+            //Com otimização
             Heap<Node> openSet = new Heap<Node>(grid.MaxSize); // The set of nodes to be evalauted
             HashSet<Node> closeSet = new HashSet<Node>(); // the set of nodes already evalauted
             openSet.Add(startNode);
 
             while (openSet.Count > 0)
             {
+                //Sem otimização
+                // Node currentNode= openSet[0];
+                //Com otimização
                 Node currentNode = openSet.RemoveFirst();
+
+                //Sem otimização
+
+                /*for (int i = 0; i < openSet.Count; i++)
+                {
+                    if (openSet[i].fCost < currentNode.fCost || openSet[i].fCost == currentNode.fCost && openSet[i].hCost < currentNode.hCost) currentNode = openSet[i];
+                }
+
+                openSet.Remove(currentNode);
+                */
 
                 closeSet.Add(currentNode);
 
