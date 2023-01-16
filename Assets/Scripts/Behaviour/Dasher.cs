@@ -21,14 +21,17 @@ namespace AnimalBehaviour
             {
                 transform.position += m_DashDirection * m_DashSpeed * Time.deltaTime;
 
-                if (Vector3.SqrMagnitude(transform.position - m_TargetPos) < 0.5f)
+                Vector3 diff = m_TargetPos - transform.position;
+
+                if (Vector3.SqrMagnitude(diff) < 0.1f ||
+                    Vector3.Dot(m_DashDirection, diff.normalized) < 0)
                 {
-                    OnDashFinished();
+                    FinishDash();
                 }
             }
         }
 
-        private void OnDashFinished()
+        private void FinishDash()
         {
             m_IsDashing = false;
             m_FinishedDashCallback();

@@ -18,7 +18,7 @@ namespace HTN.Examples
         private void Update()
         {
             if (m_WolfBrain.GetWSProperty(WSProperties.Navigating) == 1 && 
-                Vector3.SqrMagnitude(m_Context.NavAgent.Destination - m_Context.transform.position) < 0.01f)
+                Vector3.SqrMagnitude(m_Context.NavAgent.Destination - m_Context.transform.position) < 15.0f)
             {
                 m_WolfBrain.SetWSProperty(WSProperties.Navigating, 0);
             }
@@ -43,7 +43,7 @@ namespace HTN.Examples
 
             if (m_Context.CurrentTarget)
             {
-                if (Vector3.SqrMagnitude(m_Context.NavAgent.Destination - m_Context.CurrentTarget.position) < 1.0f)
+                if (Vector3.SqrMagnitude(m_Context.NavAgent.Destination - m_Context.CurrentTarget.position) > 1.0f)
                 {
                     m_Context.NavAgent.Destination = m_Context.CurrentTarget.position;
                 }
@@ -63,16 +63,18 @@ namespace HTN.Examples
                 }
                 else
                 {
+                    m_Context.CurrentTarget = null;
+                    m_WolfBrain.SetWSProperty(WSProperties.HasTarget, 0);
                     m_WolfBrain.SetWSProperty(WSProperties.TargetRange, (byte)ProximityRange.OutOfRange);
                 }
             }
 
 
-            if (m_Context.Animal._currentFood < 15f)
+            if (m_Context.Animal._currentFood < 20f)
             {
                 m_WolfBrain.SetWSProperty(WSProperties.Hunger, (byte)HungerState.Starving);
             }
-            else if (m_Context.Animal._currentFood < 40f)
+            else if (m_Context.Animal._currentFood < 50)
             {
                 m_WolfBrain.SetWSProperty(WSProperties.Hunger, (byte)HungerState.Hungry);
             }
@@ -83,6 +85,15 @@ namespace HTN.Examples
             else
             {
                 m_WolfBrain.SetWSProperty(WSProperties.Hunger, (byte)HungerState.Full);
+            }
+
+            if (m_Context.Animal._numberOfDescendants < m_Context.Animal._maxBabiesInLife)
+            {
+                m_WolfBrain.SetWSProperty(WSProperties.CanGiveBirth, 1);
+            }
+            else
+            {
+                m_WolfBrain.SetWSProperty(WSProperties.CanGiveBirth, 0);
             }
         }
 

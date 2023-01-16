@@ -16,7 +16,8 @@ namespace HTN
         CanSeeEnemy,
         TrunkHealth,
         Location,
-        Navigating
+        Navigating,
+        CanGiveBirth
     }
 
     public enum LocationState : byte
@@ -80,7 +81,11 @@ namespace HTN
                     }
                     else
                     {
-                        RestoreToLastDecomposedTask(out workingWS);
+                        if (!RestoreToLastDecomposedTask(out workingWS))
+                        {
+                            Debug.LogWarning("Failed to find a new plan!");
+                            return new PrimitiveTask[0];
+                        }
                     }
                 }
                 else
@@ -93,7 +98,11 @@ namespace HTN
                     }
                     else
                     {
-                        RestoreToLastDecomposedTask(out workingWS);
+                        if (!RestoreToLastDecomposedTask(out workingWS))
+                        {
+                            Debug.LogWarning("Failed to find a new plan!");
+                            return new PrimitiveTask[0];
+                        }
                     }
                 }
             }
@@ -118,13 +127,21 @@ namespace HTN
             m_DecompHistory.Push(record);
         }
 
-        private void RestoreToLastDecomposedTask(out List<byte> workingWS)
+        private bool RestoreToLastDecomposedTask(out List<byte> workingWS)
         {
+            if (m_DecompHistory.Count <= 0)
+            {
+                workingWS = new List<byte>();
+                return false;
+            }
+                
             DecompRecord record = m_DecompHistory.Pop();
 
             workingWS = record.WorkingWS;
             m_TasksToProcess = new Queue<ITask>(record.TasksToProcess);
             m_FinalPlan = record.FinalPlan;
+
+            return true;
 
             // TODO: Implement logic to skip the method that failed in the next iteration of the planning
         }

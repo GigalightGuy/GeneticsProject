@@ -25,9 +25,9 @@ namespace AnimalBehaviour
         {
             Vector2 randomInCircle = Random.insideUnitCircle;
             ctx.NavAgent.Destination = new Vector3(
-                randomInCircle.x * m_MaxWanderRange, 
-                0f, 
-                randomInCircle.y * m_MaxWanderRange);
+                ctx.transform.position.x + randomInCircle.x * m_MaxWanderRange, 
+                0f,
+                ctx.transform.position.z + randomInCircle.y * m_MaxWanderRange);
 
             callback();
         }
@@ -45,7 +45,6 @@ namespace AnimalBehaviour
         public void Execute(Context ctx, TaskFinishedCallback callback)
         {
             ctx.CurrentTarget.GetComponent<Behaviour>().GetEaten();
-            ctx.CurrentTarget = null;
 
             FinishTaskWithDelay(ctx, callback, (int)(m_DelayInMilisec / Time.timeScale));
         }

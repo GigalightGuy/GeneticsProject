@@ -17,10 +17,8 @@ public class NavAgent : MonoBehaviour
     }
 
     public float speed = 1f;
-    public bool running = false;
     Vector3[] path;
     int targetIndex;
-    Vector3 targetLastPos;
 
     //private void Start()
     //{
@@ -46,6 +44,7 @@ public class NavAgent : MonoBehaviour
     }
     IEnumerator FollowPath() 
     {
+        targetIndex = 0;
         if (path.Length > 0)
         {
             Vector3 currentWayPoint = path[0];

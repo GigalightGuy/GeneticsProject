@@ -533,7 +533,7 @@ Transform:
   m_GameObject: {fileID: 6887736951840486671}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 2, y: 2, z: 2}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 3291511723558473083}
@@ -635,7 +635,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 20
-  running: 0
 --- !u!114 &8641380417576043558
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -705,7 +704,7 @@ MonoBehaviour:
   _maxBabiesInLife: 20
   _maxFood: 100
   _foodOnBirth: 35
-  _minFoodForHorny: 90
+  _minFoodForHorny: 70
   _breedCooldownInHours: 0.5
   _breedCost: 50
   _sizeFactor: 1

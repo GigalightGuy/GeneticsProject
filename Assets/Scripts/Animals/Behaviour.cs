@@ -68,7 +68,7 @@ public class Behaviour : MonoBehaviour
 
     public void GetEaten()
     {
-        agent.Warp(new Vector3(-125, 1, 400));
+        agent.Warp(new Vector3(-625, 1, -100));
         //transform.position = new Vector3(-125, 1, 400);
         FoodHandler.instance.ReplaceMe(gameObject);
     }

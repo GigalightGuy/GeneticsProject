@@ -52,7 +52,7 @@ public class WolfBrain : MonoBehaviour
         PrimitiveTask wanderTask = new PrimitiveTask(wander,
             (List<byte> ws) => true,
             (List<byte> ws) => ws[(int)WSProperties.Navigating] = 1,
-            "NavigateToTarget");
+            "Wander");
         PrimitiveTask eatFoodTask = new PrimitiveTask(eatFood,
             (List<byte> ws) => true,
             (List<byte> ws) => ws[(int)WSProperties.Hunger]++,
@@ -83,24 +83,22 @@ public class WolfBrain : MonoBehaviour
 
         CompoundTask beWolf = new CompoundTask();
 
-        Method birthMethod = new Method((List<byte> ws) => 
-            ws[(int)WSProperties.Hunger] >= (byte)HungerState.Satisfied, 
+        Method birthMethod = new Method((List<byte> ws) =>
+            ws[(int)WSProperties.CanGiveBirth] == 1 &&
+            ws[(int)WSProperties.Hunger] >= (byte)HungerState.Full, 
             giveBirthTask);
         Method huntMethod = new Method((List<byte> ws) =>
             ws[(int)WSProperties.HasTarget] == 1 &&
-            ws[(int)WSProperties.TargetRange] <= (byte)ProximityRange.Leap &&
-            ws[(int)WSProperties.Hunger] <= (byte)HungerState.Satisfied, 
+            ws[(int)WSProperties.TargetRange] <= (byte)ProximityRange.Leap,
             attack);
         Method chaseTargetMethod = new Method((List<byte> ws) =>
-            ws[(int)WSProperties.HasTarget] == 1 &&
-            ws[(int)WSProperties.Hunger] < (byte)HungerState.Satisfied ||
-            (ws[(int)WSProperties.Hunger] == (byte)HungerState.Satisfied &&
-            ws[(int)WSProperties.TargetRange] < (byte)ProximityRange.OutOfRange),
+            ws[(int)WSProperties.HasTarget] == 1,
             navigateToTargetTask);
         Method restMethod = new Method((List<byte> ws) => 
-            ws[(int)WSProperties.Hunger] >= (byte)HungerState.Satisfied, 
+            ws[(int)WSProperties.Hunger] >= (byte)HungerState.Full, 
             restTask);
-        Method findTargetMethod = new Method((List<byte> ws) => true, wanderTask);
+        Method findTargetMethod = new Method((List<byte> ws) =>
+            ws[(int)WSProperties.Navigating] == 0, wanderTask);
 
         beWolf.PopulateMethods(birthMethod, huntMethod, chaseTargetMethod, restMethod, findTargetMethod);
 
