@@ -15,7 +15,8 @@ namespace HTN
         // Test Properties
         CanSeeEnemy,
         TrunkHealth,
-        Location
+        Location,
+        Navigating
     }
 
     public enum LocationState : byte

@@ -1,8 +1,6 @@
 using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.AI;
 public class Animal : MonoBehaviour
 {
     [Header("Species Variables")]
@@ -60,8 +58,7 @@ public class Animal : MonoBehaviour
     private void ApplyChanges()
     {
         gameObject.transform.localScale = Vector3.one * _sizeFactor;
-        gameObject.GetComponent<NavMeshAgent>().speed = _defaultSpeed * _speedFactor;
-        gameObject.GetComponent<NavMeshAgent>().acceleration = _defaultAccelaration * _speedFactor;
+        gameObject.GetComponent<NavAgent>().speed = _defaultSpeed * _speedFactor;
         _foodLostPerHour *= (2 - _hungerResistance);
     }
 

@@ -4,25 +4,35 @@ using UnityEngine;
 
 public class NavAgent : MonoBehaviour
 {
-    public Transform target;
-    [SerializeField]float speed = 1f;
+    public Vector3 destination 
+    { 
+        get => destination; 
+        set
+        {
+            destination = value;
+            PathRequestManager.RequestPath(transform.position, destination, OnPathFound);
+        }
+    }
+
+    public float speed = 1f;
+    public bool running = false;
     Vector3[] path;
     int targetIndex;
     Vector3 targetLastPos;
 
-    private void Start()
-    {
+    //private void Start()
+    //{
        
-        PathRequestManager.RequestPath(transform.position,target.position,OnPathFound);
+    //    PathRequestManager.RequestPath(transform.position, destination, OnPathFound);
 
 
-    }
-    private void Update()
-    {
+    //}
+    //private void Update()
+    //{
+        
+    //    PathRequestManager.RequestPath(transform.position, destination, OnPathFound);
        
-            PathRequestManager.RequestPath(transform.position, target.position, OnPathFound);
-       
-    }
+    //}
     public void OnPathFound(Vector3[] newPath,bool pathSucessful)
     {
         if (pathSucessful)
