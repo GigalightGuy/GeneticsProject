@@ -8,7 +8,7 @@ namespace AnimalBehaviour
     {
         public void Execute(Context ctx, TaskFinishedCallback callback)
         {
-            ctx.NavAgent.destination = ctx.CurrentTarget.position;
+            ctx.NavAgent.Destination = ctx.CurrentTarget.position;
 
             callback();
         }
@@ -24,7 +24,7 @@ namespace AnimalBehaviour
         public void Execute(Context ctx, TaskFinishedCallback callback)
         {
             Vector2 randomInCircle = Random.insideUnitCircle;
-            ctx.NavAgent.destination = new Vector3(
+            ctx.NavAgent.Destination = new Vector3(
                 randomInCircle.x * m_MaxWanderRange, 
                 0f, 
                 randomInCircle.y * m_MaxWanderRange);
@@ -46,11 +46,13 @@ namespace AnimalBehaviour
         {
             ctx.CurrentTarget.GetComponent<Behaviour>().GetEaten();
             ctx.CurrentTarget = null;
+
+            FinishTaskWithDelay(ctx, callback, (int)(m_DelayInMilisec / Time.timeScale));
         }
 
-        private async void FinishTaskWithDelay(Context ctx, TaskFinishedCallback callback)
+        private async void FinishTaskWithDelay(Context ctx, TaskFinishedCallback callback, int delay)
         {
-            await Task.Run(() => Task.Delay((int)(m_DelayInMilisec / Time.timeScale)).Wait());
+            await Task.Run(() => Task.Delay(delay).Wait());
 
             ctx.Animal.GainFood(30);
 
@@ -69,12 +71,12 @@ namespace AnimalBehaviour
 
         public void Execute(Context ctx, TaskFinishedCallback callback)
         {
-            FinishTaskWithDelay(ctx, callback);
+            FinishTaskWithDelay(ctx, callback, (int)(m_DelayInMilisec / Time.timeScale));
         }
 
-        private async void FinishTaskWithDelay(Context ctx, TaskFinishedCallback callback)
+        private async void FinishTaskWithDelay(Context ctx, TaskFinishedCallback callback, int delay)
         {
-            await Task.Run(() => Task.Delay((int)(m_DelayInMilisec / Time.timeScale)).Wait());
+            await Task.Run(() => Task.Delay(delay).Wait());
 
             ctx.Animal.Breed();
 
@@ -93,12 +95,12 @@ namespace AnimalBehaviour
 
         public void Execute(Context ctx, TaskFinishedCallback callback)
         {
-            FinishTaskWithDelay(callback);
+            FinishTaskWithDelay(callback, (int)(m_DelayInMilisec / Time.timeScale));
         }
 
-        private async void FinishTaskWithDelay(TaskFinishedCallback callback)
+        private async void FinishTaskWithDelay(TaskFinishedCallback callback, int delay)
         {
-            await Task.Run(() => Task.Delay((int)(m_DelayInMilisec / Time.timeScale)).Wait());
+            await Task.Run(() => Task.Delay(delay).Wait());
 
             callback();
         }
@@ -110,7 +112,7 @@ namespace AnimalBehaviour
     {
         public DashOperator(float speed)
         {
-            
+            m_Speed = speed;
         }
 
         public void Execute(Context ctx, TaskFinishedCallback callback)

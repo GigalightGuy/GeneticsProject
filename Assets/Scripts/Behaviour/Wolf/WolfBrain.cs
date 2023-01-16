@@ -55,7 +55,7 @@ public class WolfBrain : MonoBehaviour
             "NavigateToTarget");
         PrimitiveTask eatFoodTask = new PrimitiveTask(eatFood,
             (List<byte> ws) => true,
-            (List<byte> ws) => ws[(int)WSProperties.Hunger]--,
+            (List<byte> ws) => ws[(int)WSProperties.Hunger]++,
             "EatFood");
         PrimitiveTask jumpTask = new PrimitiveTask(jump,
             (List<byte> ws) => true,
@@ -63,7 +63,7 @@ public class WolfBrain : MonoBehaviour
             "Jump");
         PrimitiveTask giveBirthTask = new PrimitiveTask(giveBirth,
             (List<byte> ws) => true,
-            (List<byte> ws) => ws[(int)WSProperties.Hunger]++,
+            (List<byte> ws) => ws[(int)WSProperties.Hunger]--,
             "GiveBirth");
         PrimitiveTask restTask = new PrimitiveTask(rest,
             (List<byte> ws) => true,
@@ -100,9 +100,7 @@ public class WolfBrain : MonoBehaviour
         Method restMethod = new Method((List<byte> ws) => 
             ws[(int)WSProperties.Hunger] >= (byte)HungerState.Satisfied, 
             restTask);
-        Method findTargetMethod = new Method((List<byte> ws) =>
-            ws[(int)WSProperties.HasTarget] == 0,
-            wanderTask);
+        Method findTargetMethod = new Method((List<byte> ws) => true, wanderTask);
 
         beWolf.PopulateMethods(birthMethod, huntMethod, chaseTargetMethod, restMethod, findTargetMethod);
 

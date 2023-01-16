@@ -4,7 +4,9 @@ using UnityEngine;
 
 public class NavAgent : MonoBehaviour
 {
-    public Vector3 destination 
+    private Vector3 destination;
+
+    public Vector3 Destination 
     { 
         get => destination; 
         set
