@@ -6,7 +6,6 @@ public class Animal : MonoBehaviour
     [Header("Species Variables")]
     public float _lifeTimeInHours;
     public float _defaultSpeed;
-    public float _defaultAccelaration;
     public float _defaultFoodLossPerHour;
     public int _maxBabiesInLife;
     public int _maxFood;
@@ -21,6 +20,7 @@ public class Animal : MonoBehaviour
     public float _hungerResistance;
 
     [Header("Life Variables")]
+    public char _bloodLine;
     public int _generation;
     public float _currentFood;
     public float _foodLostPerHour;
@@ -39,7 +39,7 @@ public class Animal : MonoBehaviour
     void Start()
     {
         PopulationManager.instance.AddAnimal(gameObject);
-        gameObject.name = "wolfGen" + _generation;
+        gameObject.name = "wolfGen" + _generation + "_" + _bloodLine;
         StartCoroutine(ReadyBreeding());
     }
 
@@ -58,7 +58,7 @@ public class Animal : MonoBehaviour
     private void ApplyChanges()
     {
         gameObject.transform.localScale = Vector3.one * _sizeFactor;
-        gameObject.GetComponent<NavAgent>().speed = _defaultSpeed * _speedFactor;
+        if(gameObject.GetComponent<NavAgent>() != null) gameObject.GetComponent<NavAgent>().speed = _defaultSpeed * _speedFactor;
         _foodLostPerHour *= (2 - _hungerResistance);
     }
 
