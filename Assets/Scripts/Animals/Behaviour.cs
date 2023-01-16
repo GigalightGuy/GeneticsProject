@@ -70,6 +70,6 @@ public class Behaviour : MonoBehaviour
     {
         agent.Warp(new Vector3(-125, 1, 400));
         //transform.position = new Vector3(-125, 1, 400);
-       // FoodHandler.instance.ReplaceMe(gameObject);
+        FoodHandler.instance.ReplaceMe(gameObject);
     }
 }
