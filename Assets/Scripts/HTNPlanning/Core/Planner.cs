@@ -27,11 +27,11 @@ namespace HTN
         Enemy
     }
 
-    public enum MeterState : byte
+    public enum HungerState : byte
     {
-        Empty,
-        Low,
-        High,
+        Starving,
+        Hungry,
+        Satisfied,
         Full
     }
 

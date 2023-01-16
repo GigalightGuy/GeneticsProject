@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using AnimalBehaviour;
 
 namespace HTN
 {
@@ -7,6 +8,7 @@ namespace HTN
     {
         public NavAgent NavAgent { get; private set; }
         public Animal Animal { get; private set; }
+        public Dasher Dasher { get; private set; }
 
         public Transform CurrentTarget { get; set; }
 
@@ -14,6 +16,7 @@ namespace HTN
         {
             NavAgent = GetComponent<NavAgent>();
             Animal = GetComponent<Animal>();
+            Dasher = GetComponent<Dasher>();
         }
     }
 }

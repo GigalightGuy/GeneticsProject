@@ -4,6 +4,7 @@ using System.Linq;
 using UnityEngine;
 using HTN;
 using AnimalBehaviour;
+using System.Dynamic;
 
 public class WolfBrain : MonoBehaviour
 {
@@ -13,12 +14,12 @@ public class WolfBrain : MonoBehaviour
 
     private List<byte> m_CurrentWorldState = new List<byte>();
 
-    public byte GetWSPropertie(WSProperties key)
+    public byte GetWSProperty(WSProperties key)
     {
         return m_CurrentWorldState[(int)key];
     }
 
-    public void SetWSPropertie(WSProperties key, byte value)
+    public void SetWSProperty(WSProperties key, byte value)
     {
         if (m_CurrentWorldState[(int)key] == value) return;
 
@@ -38,13 +39,17 @@ public class WolfBrain : MonoBehaviour
         #region HTNDomain Initialization
 
         NavigateToOperator navigateToTarget = new NavigateToOperator();
-        // NavigateToRandomLocation
-        // DashTo
-        // Kill
-        // Breed
-        EatOperator eatFood = new EatOperator();
+        WanderOperator wander = new WanderOperator(150f);
+        EatOperator eatFood = new EatOperator(2000);
+        DashOperator jump = new DashOperator(40f);
+        GiveBirthOperator giveBirth = new GiveBirthOperator(5000);
+        RestOperator rest = new RestOperator(10000);
 
         PrimitiveTask navigateToTargetTask = new PrimitiveTask(navigateToTarget,
+            (List<byte> ws) => true,
+            (List<byte> ws) => ws[(int)WSProperties.Navigating] = 1,
+            "NavigateToTarget");
+        PrimitiveTask wanderTask = new PrimitiveTask(wander,
             (List<byte> ws) => true,
             (List<byte> ws) => ws[(int)WSProperties.Navigating] = 1,
             "NavigateToTarget");
@@ -52,31 +57,56 @@ public class WolfBrain : MonoBehaviour
             (List<byte> ws) => true,
             (List<byte> ws) => ws[(int)WSProperties.Hunger]--,
             "EatFood");
-        //PrimitiveTask navigateToTrunkTask = new PrimitiveTask(navigateToTrunk,
-        //    (List<byte> ws) => true,
-        //    (List<byte> ws) => ws[(int)WSProperties.Location] = (byte)LocationState.Trunk,
-        //    "NavigateToTrunk");
+        PrimitiveTask jumpTask = new PrimitiveTask(jump,
+            (List<byte> ws) => true,
+            (List<byte> ws) => ws[(int)WSProperties.TargetRange] = (byte)ProximityRange.Melee,
+            "Jump");
+        PrimitiveTask giveBirthTask = new PrimitiveTask(giveBirth,
+            (List<byte> ws) => true,
+            (List<byte> ws) => ws[(int)WSProperties.Hunger]++,
+            "GiveBirth");
+        PrimitiveTask restTask = new PrimitiveTask(rest,
+            (List<byte> ws) => true,
+            (List<byte> ws) => ws[(int)WSProperties.IsTired] = 0,
+            "Rest");
 
-        //PrimitiveTask patrolTask = new PrimitiveTask(patrol,
-        //    (List<byte> ws) => true,
-        //    (List<byte> ws) => { },
-        //    "Patrol");
+        CompoundTask attack = new CompoundTask();
 
-        //CompoundTask attackCompoundTask = new CompoundTask();
+        Method jumpMethod = new Method((List<byte> ws) => 
+            ws[(int)WSProperties.TargetRange] <= (byte)ProximityRange.Leap, 
+            jumpTask, attack);
+        Method eatFoodMethod = new Method((List<byte> ws) => 
+            ws[(int)WSProperties.TargetRange] <= (byte)ProximityRange.Melee, 
+            eatFoodTask);
 
-        //Method trunkSlamMethod = new Method((List<byte> ws) => ws[(int)WSProperties.TrunkHealth] > 0, navigateToTargetTask);
-        //Method findTrunkMethod = new Method((List<byte> ws) => true, navigateToTrunkTask, uprootTrunkTask, attackCompoundTask);
+        attack.PopulateMethods(eatFoodMethod, jumpMethod);
 
-        //attackCompoundTask.PopulateMethods(trunkSlamMethod, findTrunkMethod);
+        CompoundTask beWolf = new CompoundTask();
 
-        //CompoundTask beTrunkThumper = new CompoundTask();
+        Method birthMethod = new Method((List<byte> ws) => 
+            ws[(int)WSProperties.Hunger] >= (byte)HungerState.Satisfied, 
+            giveBirthTask);
+        Method huntMethod = new Method((List<byte> ws) =>
+            ws[(int)WSProperties.HasTarget] == 1 &&
+            ws[(int)WSProperties.TargetRange] <= (byte)ProximityRange.Leap &&
+            ws[(int)WSProperties.Hunger] <= (byte)HungerState.Satisfied, 
+            attack);
+        Method chaseTargetMethod = new Method((List<byte> ws) =>
+            ws[(int)WSProperties.HasTarget] == 1 &&
+            ws[(int)WSProperties.Hunger] < (byte)HungerState.Satisfied ||
+            (ws[(int)WSProperties.Hunger] == (byte)HungerState.Satisfied &&
+            ws[(int)WSProperties.TargetRange] < (byte)ProximityRange.OutOfRange),
+            navigateToTargetTask);
+        Method restMethod = new Method((List<byte> ws) => 
+            ws[(int)WSProperties.Hunger] >= (byte)HungerState.Satisfied, 
+            restTask);
+        Method findTargetMethod = new Method((List<byte> ws) =>
+            ws[(int)WSProperties.HasTarget] == 0,
+            wanderTask);
 
-        //Method attackMethod = new Method((List<byte> ws) => ws[(int)WSProperties.CanSeeEnemy] == 1, attackCompoundTask);
-        //Method patrolMethod = new Method((List<byte> ws) => true, patrolTask);
+        beWolf.PopulateMethods(birthMethod, huntMethod, chaseTargetMethod, restMethod, findTargetMethod);
 
-        //beTrunkThumper.PopulateMethods(attackMethod, patrolMethod);
-
-        //m_Planner.SetRootTask(beTrunkThumper);
+        m_Planner.SetRootTask(beWolf);
 
         #endregion // HTNDomain Initialization
 
