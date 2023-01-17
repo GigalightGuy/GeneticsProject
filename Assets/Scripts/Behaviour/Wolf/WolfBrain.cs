@@ -38,7 +38,7 @@ public class WolfBrain : MonoBehaviour
         #region HTNDomain Initialization
 
         NavigateToOperator navigateToTarget = new NavigateToOperator();
-        WanderOperator wander = new WanderOperator(150f);
+        WanderOperator wander = new WanderOperator(300f);
         EatOperator eatFood = new EatOperator(2000);
         DashOperator jump = new DashOperator(40f);
         GiveBirthOperator giveBirth = new GiveBirthOperator(5000);
@@ -91,7 +91,8 @@ public class WolfBrain : MonoBehaviour
             ws[(int)WSProperties.TargetRange] <= (byte)ProximityRange.Leap,
             attack);
         Method chaseTargetMethod = new Method((List<byte> ws) =>
-            ws[(int)WSProperties.HasTarget] == 1,
+            ws[(int)WSProperties.HasTarget] == 1 &&
+            ws[(int)WSProperties.Navigating] == 0,
             navigateToTargetTask);
         Method restMethod = new Method((List<byte> ws) => 
             ws[(int)WSProperties.Hunger] >= (byte)HungerState.Full, 

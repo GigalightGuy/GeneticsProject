@@ -8,11 +8,14 @@ namespace HTN.Examples
         [SerializeField] private float m_MeleeRadius = 2.0f;
         [SerializeField] private float m_LeapRadius = 20.0f;
         [SerializeField] private float m_DetectionRadius = 50.0f;
+        [SerializeField] private GameObject m_DetectionVisualizationPrefab;
 
         private void Start()
         {
             m_WolfBrain = GetComponent<WolfBrain>();
             m_Context = GetComponent<Context>();
+
+            m_DetectionVisualizationPrefab.transform.localScale = new Vector3(m_DetectionRadius, 0.01f, m_DetectionRadius);
         }
 
         private void Update()

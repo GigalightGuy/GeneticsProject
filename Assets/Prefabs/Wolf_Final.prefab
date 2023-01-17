@@ -441,7 +441,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6667483777624106796}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.5, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 0.01, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -661,7 +661,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_MeleeRadius: 2
   m_LeapRadius: 20
-  m_DetectionRadius: 50
+  m_DetectionRadius: 100
+  m_DetectionVisualizationPrefab: {fileID: 6667483777624106796}
 --- !u!114 &5817630636118579698
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -713,7 +714,7 @@ MonoBehaviour:
   _bloodLine: 0
   _generation: 0
   _currentFood: 0
-  _foodLostPerHour: 300
+  _foodLostPerHour: 100
   _numberOfDescendants: 0
   _parent: {fileID: 0}
   _readyToBreed: 1
