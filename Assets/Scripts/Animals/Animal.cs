@@ -43,7 +43,13 @@ public class Animal : MonoBehaviour
     {
         PopulationManager.instance.AddAnimal(gameObject);
         gameObject.name = "wolfGen" + _generation + "_" + _bloodLine;
+        if (_generation == 0 && GetComponent<NavAgentTest>() != null)
+        {
+
+            GetComponent<NavAgentTest>().speed = _defaultSpeed * _speedFactor;
+        }
         StartCoroutine(ReadyBreeding());
+
     }
 
     public void Born(Animal parent)
@@ -61,7 +67,7 @@ public class Animal : MonoBehaviour
     private void ApplyChanges()
     {
         gameObject.transform.localScale = Vector3.one * _sizeFactor;
-        if(gameObject.GetComponent<NavAgent>() != null) gameObject.GetComponent<NavAgent>().speed = _defaultSpeed * _speedFactor;
+        if(gameObject.GetComponent<NavAgentTest>() != null) gameObject.GetComponent<NavAgentTest>().speed = _defaultSpeed * _speedFactor;
         else if (gameObject.GetComponent<NavMeshAgent>() != null)
         {
             gameObject.GetComponent<NavMeshAgent>().speed = _defaultSpeed * _speedFactor;

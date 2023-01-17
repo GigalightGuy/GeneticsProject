@@ -19,7 +19,7 @@ public class SelfPathfinding : MonoBehaviour
 
 
     
-    public Vector3[] FindPath(Vector3 starPos, Vector3 targetPos)
+    public void FindPath(Vector3 starPos, Vector3 targetPos, Action<Vector3[], bool> callback)
     {
         Stopwatch sw = new Stopwatch();
         sw.Start();
@@ -92,8 +92,7 @@ public class SelfPathfinding : MonoBehaviour
 
         if (pathSucess) wayPoints = RetracePath(startNode, targetNode);
 
-       // resquestManager.FinishProcessingPath(wayPoints, pathSucess);
-        return wayPoints;
+         callback(wayPoints, pathSucess);
     }
     //Recaucula o path
     Vector3[] RetracePath(Node startNode, Node endNode)

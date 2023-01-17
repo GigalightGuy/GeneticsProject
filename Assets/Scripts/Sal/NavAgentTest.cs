@@ -13,14 +13,21 @@ public class NavAgentTest : MonoBehaviour
         set
         {
             destination = value;
-            selfPathfinding.FindPath(transform.position, destination);
+            
+           selfPathfinding.FindPath(transform.position, destination,OnPathFound);
+            
         }
     }
-    public SelfPathfinding selfPathfinding = new SelfPathfinding();
+    public SelfPathfinding selfPathfinding;
     public float speed = 1f;
     Vector3[] path;
     int targetIndex;
 
+
+    private void Awake()
+    {
+        selfPathfinding= GetComponent<SelfPathfinding>();
+    }
     //private void Start()
     //{
 
@@ -48,11 +55,11 @@ public class NavAgentTest : MonoBehaviour
         if (pathSucessful)
         {
             path = newPath;
-            if ((path[path.Length - 1] - Destination).sqrMagnitude < 4f)
-            {
+            //if ((path[path.Length - 1] - Destination).sqrMagnitude < 4f)
+            //{
                 StopCoroutine("FollowPath");
                 StartCoroutine("FollowPath");
-            }
+            //}
         }
     }
     IEnumerator FollowPath()

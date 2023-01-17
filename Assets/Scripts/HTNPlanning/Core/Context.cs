@@ -3,10 +3,10 @@ using AnimalBehaviour;
 
 namespace HTN
 {
-    [RequireComponent(typeof(NavAgent))]
+    [RequireComponent(typeof(NavAgentTest))]
     public class Context : MonoBehaviour
     {
-        public NavAgent NavAgent { get; private set; }
+        public NavAgentTest NavAgent { get; private set; }
         public Animal Animal { get; private set; }
         public Dasher Dasher { get; private set; }
 
@@ -14,7 +14,7 @@ namespace HTN
 
         private void Start()
         {
-            NavAgent = GetComponent<NavAgent>();
+            NavAgent = GetComponent<NavAgentTest>();
             Animal = GetComponent<Animal>();
             Dasher = GetComponent<Dasher>();
         }

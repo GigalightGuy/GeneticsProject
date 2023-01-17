@@ -511,13 +511,13 @@ GameObject:
   - component: {fileID: 1030754004917095572}
   - component: {fileID: 4015467301246350538}
   - component: {fileID: 7906723714664906467}
-  - component: {fileID: 8229839476037167381}
   - component: {fileID: 8641380417576043558}
   - component: {fileID: 3532504522443152638}
   - component: {fileID: 5817630636118579698}
   - component: {fileID: -4854434935170273751}
   - component: {fileID: 9067952947353917100}
   - component: {fileID: 8090787424383666790}
+  - component: {fileID: 1077825918394411734}
   m_Layer: 0
   m_Name: Wolf_FinalTest
   m_TagString: Predator
@@ -623,20 +623,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &8229839476037167381
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6887736951840486671}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3a68eeac48a26744ebc1a532b4392a08, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  target: []
-  speed: 20
 --- !u!114 &8641380417576043558
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -714,7 +700,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _lifeTimeInHours: 4
-  _defaultSpeed: 20
+  _defaultSpeed: 3
   _defaultFoodLossPerHour: 300
   _maxBabiesInLife: 20
   _maxFood: 100
@@ -733,3 +719,18 @@ MonoBehaviour:
   _parent: {fileID: 0}
   _readyToBreed: 1
   _controlledBreeding: 1
+--- !u!114 &1077825918394411734
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6887736951840486671}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b1fe441a3231a064d9ee312507c07d37, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  target: []
+  selfPathfinding: {fileID: 0}
+  speed: 1
