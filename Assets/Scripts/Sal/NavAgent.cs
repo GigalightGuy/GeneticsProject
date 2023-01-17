@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class NavAgent : MonoBehaviour
 {
-    [SerializeField] Transform target;
+    [SerializeField] Transform[] target;
     private Vector3 destination;
-
+    int count = 0;
     public Vector3 Destination 
     { 
         get => destination; 
@@ -32,7 +32,11 @@ public class NavAgent : MonoBehaviour
     {
         if (Input.GetKey(KeyCode.M) && target != null)
         {
-            PathRequestManager.RequestPath(transform.position, target.position, OnPathFound);
+            //PathRequestManager.RequestPath(transform.position, target.position, OnPathFound);
+            
+            
+            Destination = target[count].position;
+            count = (count + 1) % target.Length;
         }
        
 

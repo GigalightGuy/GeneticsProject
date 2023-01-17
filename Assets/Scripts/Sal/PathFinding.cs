@@ -108,28 +108,46 @@ public class PathFinding : MonoBehaviour
             path.Add(currentNode);
             currentNode = currentNode.parent;
         }
-        Vector3[] wayPoints = SimplifyPath(path);
+        Vector3[] wayPoints = SimplifyPath(path,startNode);
         Array.Reverse(wayPoints);
         return wayPoints;
         
     }
     //Os pontos de referencia só são colocados aonde o caminho muda de direção
-    Vector3[] SimplifyPath(List<Node> path)
+    //Vector3[] SimplifyPath(List<Node> path)
+    //{
+    //    List<Vector3> wayPoints = new List<Vector3>();
+    //    Vector2 directionOld= Vector2.zero;
+    //    for (int i = 1; i < path.Count; i++)
+    //    {
+
+    //        Vector2 directionNew = new Vector2(path[i - 1].gridX - path[i].gridX, path[i - 1].gridY - path[i].gridY);
+    //        if(directionNew !=directionOld) 
+    //        {
+    //            wayPoints.Add(path[i].worldPosition);
+    //        }
+    //        directionOld= directionNew;
+    //    }
+
+    //    return wayPoints.ToArray();
+    //}
+
+    Vector3[] SimplifyPath(List<Node> path, Node startNode)
     {
-        List<Vector3> wayPoints = new List<Vector3>();
-        Vector2 directionOld= Vector2.zero;
+        List<Vector3> waypoints = new List<Vector3>();
+        Vector2 directionOld = Vector2.zero;
         for (int i = 1; i < path.Count; i++)
         {
-          
             Vector2 directionNew = new Vector2(path[i - 1].gridX - path[i].gridX, path[i - 1].gridY - path[i].gridY);
-            if(directionNew !=directionOld) 
+            if (directionNew != directionOld)
             {
-                wayPoints.Add(path[i].worldPosition);
+                waypoints.Add(path[i - 1].worldPosition); //Changed from path[i] to path[i-1]
             }
-            directionOld= directionNew;
+            directionOld = directionNew;
+            if (i == path.Count - 1 && directionOld != new Vector2(path[i].gridX, path[i].gridY) - new Vector2(startNode.gridX, startNode.gridY))
+                waypoints.Add(path[path.Count - 1].worldPosition);
         }
-
-        return wayPoints.ToArray();
+        return waypoints.ToArray();
     }
     int GetDistance(Node nodeA,Node nodeB)
     {
