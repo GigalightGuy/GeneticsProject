@@ -2,21 +2,21 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class NavAgent : MonoBehaviour
+public class NavAgentTest : MonoBehaviour
 {
     [SerializeField] Transform[] target;
     private Vector3 destination;
     int count = 0;
-    public Vector3 Destination 
-    { 
-        get => destination; 
+    public Vector3 Destination
+    {
+        get => destination;
         set
         {
             destination = value;
-            PathRequestManager.RequestPath(transform.position, destination, OnPathFound);
+            selfPathfinding.FindPath(transform.position, destination);
         }
     }
-    
+    public SelfPathfinding selfPathfinding = new SelfPathfinding();
     public float speed = 1f;
     Vector3[] path;
     int targetIndex;
@@ -33,21 +33,21 @@ public class NavAgent : MonoBehaviour
         if (Input.GetKey(KeyCode.M) && target != null)
         {
             //PathRequestManager.RequestPath(transform.position, target.position, OnPathFound);
-            
-            
+
+
             Destination = target[count].position;
             count = (count + 1) % target.Length;
         }
-       
+
 
     }
 
 
-    public void OnPathFound(Vector3[] newPath,bool pathSucessful)
+    public void OnPathFound(Vector3[] newPath, bool pathSucessful)
     {
         if (pathSucessful)
         {
-            path= newPath;
+            path = newPath;
             if ((path[path.Length - 1] - Destination).sqrMagnitude < 4f)
             {
                 StopCoroutine("FollowPath");
@@ -55,7 +55,7 @@ public class NavAgent : MonoBehaviour
             }
         }
     }
-    IEnumerator FollowPath() 
+    IEnumerator FollowPath()
     {
         targetIndex = 0;
         if (path.Length > 0)
@@ -74,5 +74,4 @@ public class NavAgent : MonoBehaviour
             }
         }
     }
-}  
-
+}
