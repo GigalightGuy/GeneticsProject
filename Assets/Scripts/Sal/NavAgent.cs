@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class NavAgent : MonoBehaviour
 {
+    [SerializeField] Transform target;
     private Vector3 destination;
 
     public Vector3 Destination 
@@ -22,17 +23,22 @@ public class NavAgent : MonoBehaviour
 
     //private void Start()
     //{
-       
+
     //    PathRequestManager.RequestPath(transform.position, destination, OnPathFound);
 
 
     //}
-    //private void Update()
-    //{
-        
-    //    PathRequestManager.RequestPath(transform.position, destination, OnPathFound);
+    private void Update()
+    {
+        if (Input.GetKey(KeyCode.M) && target != null)
+        {
+            PathRequestManager.RequestPath(transform.position, target.position, OnPathFound);
+        }
        
-    //}
+
+    }
+
+
     public void OnPathFound(Vector3[] newPath,bool pathSucessful)
     {
         if (pathSucessful)
