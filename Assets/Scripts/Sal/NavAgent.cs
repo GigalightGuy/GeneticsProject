@@ -56,7 +56,7 @@ public class NavAgent : MonoBehaviour
             Vector3 currentWayPoint = path[0];
             while (true)
             {
-                if (transform.position == currentWayPoint)
+                if (Vector3.SqrMagnitude(transform.position - currentWayPoint) < 0.1f)
                 {
                     targetIndex++;
                     if (targetIndex >= path.Length) yield break;

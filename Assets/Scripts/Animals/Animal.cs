@@ -86,7 +86,7 @@ public class Animal : MonoBehaviour
         _numberOfDescendants++;
         LoseFood(_breedCost);
         _readyToBreed = false;
-        StartCoroutine(ReadyBreeding());
+        // StartCoroutine(ReadyBreeding());
     }
 
     // Update is called once per frame
@@ -100,10 +100,10 @@ public class Animal : MonoBehaviour
         {
             Breed();
         }
-        if (_readyToBreed)
-        {
-            Breed();
-        }
+        //if (_readyToBreed)
+        //{
+        //    Breed();
+        //}
     }
 
     IEnumerator ReadyBreeding()
