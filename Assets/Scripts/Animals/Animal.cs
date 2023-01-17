@@ -1,6 +1,8 @@
 using System;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.AI;
+
 public class Animal : MonoBehaviour
 {
     [Header("Species Variables")]
@@ -27,6 +29,7 @@ public class Animal : MonoBehaviour
     public int _numberOfDescendants;
     public GameObject _parent;
     public bool _readyToBreed = true;
+    public bool _controlledBreeding = true;
 
 
     void Awake()
@@ -59,6 +62,11 @@ public class Animal : MonoBehaviour
     {
         gameObject.transform.localScale = Vector3.one * _sizeFactor;
         if(gameObject.GetComponent<NavAgent>() != null) gameObject.GetComponent<NavAgent>().speed = _defaultSpeed * _speedFactor;
+        else if (gameObject.GetComponent<NavMeshAgent>() != null)
+        {
+            gameObject.GetComponent<NavMeshAgent>().speed = _defaultSpeed * _speedFactor;
+            gameObject.GetComponent<NavMeshAgent>().acceleration = 8 * _speedFactor;
+        }
         _foodLostPerHour *= (2 - _hungerResistance);
     }
 
@@ -78,6 +86,7 @@ public class Animal : MonoBehaviour
         if (_numberOfDescendants >= _maxBabiesInLife) return;
         else if (_currentFood <= _minFoodForHorny) return;
 
+        Debug.LogWarning("FILHO FILHO FILHO");
         GameObject descendant = Instantiate(gameObject, transform.position - transform.forward, Quaternion.identity);
         var descendantScript = descendant.GetComponent<Animal>();
         descendantScript.Born(this);
@@ -100,10 +109,10 @@ public class Animal : MonoBehaviour
         {
             Breed();
         }
-        //if (_readyToBreed)
-        //{
-        //    Breed();
-        //}
+        if (_readyToBreed && _controlledBreeding)
+        {
+            Breed();
+        }
     }
 
     IEnumerator ReadyBreeding()
