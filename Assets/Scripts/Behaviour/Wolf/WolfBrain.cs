@@ -4,7 +4,6 @@ using System.Linq;
 using UnityEngine;
 using HTN;
 using AnimalBehaviour;
-using System.Dynamic;
 
 public class WolfBrain : MonoBehaviour
 {

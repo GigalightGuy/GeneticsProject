@@ -18,7 +18,7 @@ namespace HTN.Examples
         private void Update()
         {
             if (m_WolfBrain.GetWSProperty(WSProperties.Navigating) == 1 && 
-                Vector3.SqrMagnitude(m_Context.NavAgent.Destination - m_Context.transform.position) < 15.0f)
+                Vector3.SqrMagnitude(m_Context.NavAgent.Destination - m_Context.transform.position) < 15.0f * 15.0f)
             {
                 m_WolfBrain.SetWSProperty(WSProperties.Navigating, 0);
             }
