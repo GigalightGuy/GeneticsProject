@@ -18,7 +18,9 @@ public class PopulationManager : MonoBehaviour
     [SerializeField] TextMeshProUGUI avgHRTxt;
     [SerializeField] TextMeshProUGUI oldestGenTxt;
     [SerializeField] TextMeshProUGUI youngestGenTxt;
-
+    [SerializeField] TextMeshProUGUI popMan;
+    int deadElems = 0;
+    int liveElems = 0;
     private void Awake()
     {
         if (instance != null)
@@ -30,12 +32,16 @@ public class PopulationManager : MonoBehaviour
     public void AddAnimal(GameObject animal)
     {
         animals.Add(animal);
+        liveElems++;
         animalStats.Add(animal.GetComponent<Animal>());
         RecalculateStats();
+
     }
     public void RemoveAnimal(GameObject animal)
     {
         animals.Remove(animal);
+        deadElems++;
+        liveElems--;
         animalStats.Remove(animal.GetComponent<Animal>());
         RecalculateStats();
     }
@@ -112,5 +118,6 @@ public class PopulationManager : MonoBehaviour
         avgHRTxt.text = hungerRes.ToString("#0.00");
         oldestGenTxt.text = oldest.ToString();
         youngestGenTxt.text = newest.ToString();
+        popMan.text = "Population Info:        " + " Live Elements: " + liveElems + "          Dead Elements: " + deadElems;
     }
 }
